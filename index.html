@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Магазин обуви</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f8f8f8; }
+    h2 { color: #333; }
+    button { margin: 8px; padding: 12px 24px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h2>Выберите пол</h2>
+  <button onclick="selectGender('Мужская')">Мужская</button>
+  <button onclick="selectGender('Женская')">Женская</button>
+
+  <div id="step2" style="display:none;">
+    <h2>Выберите категорию</h2>
+    <button onclick="selectCategory('Кроссовки')">Кроссовки</button>
+    <button onclick="selectCategory('Кеды')">Кеды</button>
+    <button onclick="selectCategory('Резиновая обувь')">Резиновая обувь</button>
+  </div>
+
+  <script>
+    let gender = "";
+
+    function selectGender(g) {
+      gender = g;
+      document.getElementById('step2').style.display = 'block';
+    }
+
+    function selectCategory(cat) {
+      alert(`Вы выбрали: ${gender}, категория: ${cat}`);
+    }
+  </script>
+</body>
+</html>
