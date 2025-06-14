@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Бренды</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f9f9f9; }
+    h1 { text-align: center; }
+    .brand {
+      display: block;
+      padding: 15px;
+      margin: 10px 0;
+      background: #fff;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 18px;
+      text-decoration: none;
+      color: #333;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .brand:hover {
+      background: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="category-title">Бренды</h1>
+  <div id="brand-list"></div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    console.log("Категория из URL:", category);
+
+    const brandList = document.getElementById('brand-list');
+    const title = document.getElementById('category-title');
+
+    const brandsByCategory = {
+      krossovki: ['Nike', 'Adidas', 'Puma'],
+      kedy: ['Converse', 'Vans'],
+      rezina: ['Demar', 'Nordman'],
+      ryukzaki: ['Eastpak', 'Totto']
+    };
+
+    const titles = {
+      krossovki: 'Кроссовки',
+      kedy: 'Кеды',
+      rezina: 'Резиновая обувь',
+      ryukzaki: 'Рюкзаки'
+    };
+
+    title.textContent = titles[category] || 'Бренды';
+
+    const brands = brandsByCategory[category] || [];
+    console.log("Бренды:", brands);
+
+    brands.forEach(function(brand) {
+      const a = document.createElement('a');
+      a.href = `products.html?category=${category}&brand=${brand}`;
+      a.textContent = brand;
+      a.className = 'brand';
+      brandList.appendChild(a);
+    });
+  </script>
+</body>
+</html>

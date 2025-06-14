@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Оформление заказа</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f9f9f9; }
+    h1 { text-align: center; }
+    form { max-width: 400px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    label { display: block; margin-top: 15px; }
+    input, select, textarea {
+      width: 100%; padding: 10px; margin-top: 5px;
+      border: 1px solid #ccc; border-radius: 5px;
+    }
+    button {
+      margin-top: 20px; width: 100%;
+      padding: 10px; background: #4CAF50;
+      color: white; border: none; border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover { background: #45a049; }
+  </style>
+</head>
+<body>
+  <h1>Оформление заказа</h1>
+  <form id="order-form">
+    <p id="product-name"></p>
+    
+    <label for="size">Выберите размер</label>
+    <select id="size" name="size" required>
+      <option value="">—</option>
+      <option>36</option>
+      <option>37</option>
+      <option>38</option>
+      <option>39</option>
+      <option>40</option>
+      <option>41</option>
+      <option>42</option>
+    </select>
+
+    <label for="address">Адрес доставки</label>
+    <input type="text" id="address" name="address" required>
+
+    <label for="comment">Комментарий</label>
+    <textarea id="comment" name="comment"></textarea>
+
+    <button type="submit">Отправить</button>
+  </form>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const product = params.get('product') || 'Товар';
+    const brand = params.get('brand') || '';
+    const category = params.get('category') || '';
+
+    document.getElementById('product-name').textContent = Вы заказываете: ${brand} ${product};
+
+    document.getElementById('order-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const size = document.getElementById('size').value;
+      const address = document.getElementById('address').value;
+      const comment = document.getElementById('comment').value;
+
+      const message = `
+🛒 Новый заказ:
+Товар: ${brand} ${product}
+Размер: ${size}
+Адрес: ${address}
+Комментарий: ${comment}
+Категория: ${category}
+`;
+
+      if (window.Telegram.WebApp) {
+        Telegram.WebApp.sendData(message); // Передаём боту
+        Telegram.WebApp.close(); // Закрываем WebApp
+      } else {
+        alert("Telegram WebApp API недоступен. Проверьте запуск через Telegram.");
+      }
+    });
+  </script>
+</body>
+</html>
