@@ -74,7 +74,7 @@
         <h3>Adidas Run</h3>
         <p>Мужские / Кроссовки</p>
         <p><strong>5 990 ₽</strong></p>
-        <button>Выбрать размер</button>
+        <button onclick="openForm('Adidas Run')">Заказать</button>
       </div>
     </div>
     <div class="card">
@@ -83,7 +83,7 @@
         <h3>Nike Court</h3>
         <p>Женские / Кеды</p>
         <p><strong>4 990 ₽</strong></p>
-        <button>Выбрать размер</button>
+        <button onclick="openForm('Nike Court')">Заказать</button>
       </div>
     </div>
     <div class="card">
@@ -92,9 +92,43 @@
         <h3>Puma Rain</h3>
         <p>Мужские / Резиновая обувь</p>
         <p><strong>3 290 ₽</strong></p>
-        <button>Выбрать размер</button>
+        <button onclick="openForm('Puma Rain')">Заказать</button>
       </div>
     </div>
   </div>
 </body>
 </html>
+
+<script>
+  function openForm(model) {
+    const formHTML = `
+      <div id="form-modal" style="position:fixed;top:0;left:0;width:100%;height:100%;
+        background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;">
+        <div style="background:white;padding:20px;border-radius:10px;width:300px;">
+          <h3 style="margin-top:0">Заказ: ${model}</h3>
+          <input id="size" placeholder="Размер" style="width:100%;margin-bottom:10px;padding:8px"/>
+          <input id="address" placeholder="Адрес" style="width:100%;margin-bottom:10px;padding:8px"/>
+          <textarea id="comment" placeholder="Комментарий" style="width:100%;margin-bottom:10px;padding:8px"></textarea>
+          <button onclick="sendOrder('${model}')" style="width:100%;padding:10px;background:black;color:white;border:none;">Отправить</button>
+          <button onclick="document.getElementById('form-modal').remove()" style="width:100%;margin-top:10px;padding:10px;">Отмена</button>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML("beforeend", formHTML);
+  }
+
+  function sendOrder(model) {
+    const size = document.getElementById("size").value;
+    const address = document.getElementById("address").value;
+    const comment = document.getElementById("comment").value;
+    const data = {
+      model,
+      size,
+      address,
+      comment
+    };
+    const tg = window.Telegram.WebApp;
+    tg.sendData(JSON.stringify(data));
+    tg.close();
+  }
+</script>
