@@ -1,64 +1,101 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Vitrina Debug</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body { font-family: sans-serif; padding: 20px; background: #f5f5f5; }
-        label { display: block; margin-top: 15px; }
-        input, textarea { width: 100%; padding: 10px; margin-top: 5px; font-size: 16px; }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 0;
-            font-size: 18px;
-            width: 100%;
-            border: none;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Витрина обуви</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 500px; margin: auto; padding: 20px; }
+    h2 { color: #333; }
+    .hidden { display: none; }
+    label, select, input, textarea, button { display: block; width: 100%; margin: 10px 0; font-size: 16px; }
+    button { padding: 10px; background-color: #222; color: white; border: none; cursor: pointer; }
+    button:hover { background-color: #444; }
+  </style>
 </head>
 <body>
-    <h2>Заказ обуви (DEBUG)</h2>
-    <form id="orderForm">
-        <label for="size">Размер:</label>
-        <input type="text" id="size" name="size" required>
+  <h2>Магазин обуви</h2>
 
-        <label for="address">Адрес:</label>
-        <input type="text" id="address" name="address" required>
+  <label for="gender">Пол</label>
+  <select id="gender">
+    <option value="">Выберите</option>
+    <option value="Мужская">Мужская</option>
+    <option value="Женская">Женская</option>
+  </select>
 
-        <label for="comment">Комментарий:</label>
-        <textarea id="comment" name="comment"></textarea>
+  <div id="step2" class="hidden">
+    <label for="category">Категория</label>
+    <select id="category">
+      <option value="">Выберите</option>
+      <option value="Кроссовки">Кроссовки</option>
+      <option value="Кеды">Кеды</option>
+      <option value="Резиновая обувь">Резиновая обувь</option>
+    </select>
+  </div>
 
-        <button type="submit">Отправить</button>
-    </form>
+  <div id="step3" class="hidden">
+    <label for="brand">Бренд</label>
+    <select id="brand">
+      <option value="">Выберите</option>
+      <option value="Nike">Nike</option>
+      <option value="Adidas">Adidas</option>
+      <option value="Puma">Puma</option>
+    </select>
+  </div>
 
-    <script>
-        window.onerror = function(message, source, lineno, colno, error) {
-            console.error("🧨 JS Error:", message, "at", source + ":" + lineno + ":" + colno);
-        };
+  <div id="step4" class="hidden">
+    <label for="model">Модель</label>
+    <select id="model">
+      <option value="">Выберите</option>
+      <option value="Air Max 90">Air Max 90</option>
+      <option value="Ultraboost">Ultraboost</option>
+      <option value="Puma RS-X">Puma RS-X</option>
+    </select>
+  </div>
 
-        console.log("🛠 Telegram.WebApp = ", window.Telegram?.WebApp);
+  <div id="step5" class="hidden">
+    <label for="size">Размер</label>
+    <input type="text" id="size" placeholder="Например, 42">
 
-        document.getElementById("orderForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            const data = {
-                size: document.getElementById("size").value,
-                address: document.getElementById("address").value,
-                comment: document.getElementById("comment").value
-            };
+    <label for="address">Адрес</label>
+    <textarea id="address" placeholder="Город, улица, дом..."></textarea>
 
-            console.log("📦 Отправка данных:", data);
+    <label for="comment">Комментарий</label>
+    <textarea id="comment" placeholder="Доп. пожелания..."></textarea>
 
-            if (window.Telegram?.WebApp?.sendData) {
-                Telegram.WebApp.sendData(JSON.stringify(data));
-                console.log("✅ Telegram.WebApp.sendData вызван");
-            } else {
-                console.error("❌ Telegram.WebApp.sendData НЕ ДОСТУПЕН");
-            }
-        });
-    </script>
+    <button onclick="sendOrder()">Оформить заказ</button>
+  </div>
+
+  <script>
+    document.getElementById('gender').addEventListener('change', () => {
+      document.getElementById('step2').classList.remove('hidden');
+    });
+    document.getElementById('category').addEventListener('change', () => {
+      document.getElementById('step3').classList.remove('hidden');
+    });
+    document.getElementById('brand').addEventListener('change', () => {
+      document.getElementById('step4').classList.remove('hidden');
+    });
+    document.getElementById('model').addEventListener('change', () => {
+      document.getElementById('step5').classList.remove('hidden');
+    });
+
+    function sendOrder() {
+      const model = document.getElementById('model').value;
+      const size = document.getElementById('size').value;
+      const address = document.getElementById('address').value;
+      const comment = document.getElementById('comment').value;
+
+      const data = { model, size, address, comment };
+
+      if (window.Telegram && window.Telegram.WebApp) {
+        Telegram.WebApp.sendData(JSON.stringify(data));
+        alert("Заказ отправлен!");
+      } else {
+        alert("❌ Ошибка: Telegram WebApp не найден.");
+      }
+    }
+  </script>
 </body>
 </html>
