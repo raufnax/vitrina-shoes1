@@ -1,1 +1,1 @@
-# vitrina-shoes1
+# shoes-store-webapp
